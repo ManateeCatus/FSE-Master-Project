@@ -1,11 +1,17 @@
 const circleList = [];
-var timeLimit = 350
+var timeLimit = 400
 const circleNumber = 6;
 var timer = 0;
-
+var score = 0;
+var scoreMult = 1;
+var streak = 0;
+const endTime = 100;
+var gameRunning = true;
+const widthC = 400;
+const heightC = 400;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(widthC, heightC);
     
   for (let i = 0; i < circleNumber; i++)
     {
@@ -25,10 +31,11 @@ function createCircle(i) {
     red: 175,
     blue: 50,
     green: 150,
-    xPos: random(50, 350),
-    yPos: random(50, 300),
+    alpha: 255,
+    xPos: random(50, widthC - 50),
+    yPos: random(50, heightC - 50),
     time:  -1 * (timeLimit / 3) * i,  
-    
+    fading: false,
     number: floor(2 + random (6))
     
     
@@ -49,10 +56,19 @@ function changeColor()
 
 function mousePressed()
 {
+  if (gameRunning)
+    {
   if (getNearestCircle() > -1)
     {
       circleList[getNearestCircle()].number -= 1;
+    }
       
+      
+    }
+  
+  else
+    {
+      //Put code here to make this game stop running
       
       
     }
@@ -79,7 +95,7 @@ function getNearestCircle()
       let dist = getDistance(circleList[i].xPos, circleList[i].yPos);
       
       
-    if (dist < 25)
+    if (dist < circleList[i].radius / 2)
       {
         if (dist < closest);
         {
@@ -109,10 +125,22 @@ function circleUpdate(c)
     {
       c.xPos = -500;
       c.yPos = -500;
-      c.time = timeLimit;
+      c.time = timeLimit + 1;
       c.number = 1;
+      if (scoreMult < 10)
+        {
+      scoreMult += 1;
+        }
+      streak++;
+      score += scoreMult;
       //Gradual scaling of timeLimit increases speed, disabled for now.
       //timeLimit -= 1;
+    }
+  
+  if (c.time == timeLimit)
+    {
+      scoreMult = 1;
+      streak = 0;
     }
   
   if (c.time > timeLimit * 2)
@@ -126,8 +154,11 @@ function circleUpdate(c)
 
 
 function draw() {
-  background(220);
   
+  
+  if (gameRunning)
+{
+  background(220);
   fill(100);
   for (let i = 0; i < circleList.length; i++)
     {
@@ -136,14 +167,14 @@ function draw() {
       if (c.time > 0 && c.number > 0)
         {
       
-      fill(c.red * c.time / timeLimit + 20, c.green * (timeLimit - c.time) / timeLimit , c.blue * (timeLimit - c.time)  / timeLimit );
+      fill(c.red * c.time / timeLimit + 20, c.green * (timeLimit - c.time) / timeLimit , c.blue * (timeLimit - c.time)  / timeLimit, c.alpha);
       
       
       circle(c.xPos, c.yPos, c.radius);
     
       fill(230);
       
-      text('' + c.number, c.xPos - 9, c.yPos + 9);
+      text('' + c.number, c.xPos - (c.radius / 5.5), c.yPos + (c.radius / 5.5));
         }
       c.time++;
       
@@ -153,7 +184,34 @@ function draw() {
   
   fill(30);
   textSize(32);
-  text(getNearestCircle() + ', ' + timeLimit, 25, 375)
+  if (ceil(((endTime - timer) / 80)) % 60 > 9)
+    {
+  text(floor(ceil((endTime - timer) /80) / 60) + ':' +ceil(((endTime - timer) / 80)) % 60, widthC - 70, 25);
+      
+    }
+  else
+    {
+     text(floor(ceil((endTime - timer) / 80) / 60) + ':0' +ceil(((endTime - timer) / 80)) % 60, widthC - 70, 25); 
+      
+    }
   
+  if (timer > endTime)
+    {
+      gameRunning = false;
+      
+    }
   
+}
+  else
+    {
+      background("#8096A8")
+      
+      fill("rgb(56,47,47)");
+      textSize(50);
+      text("Time's up!", widthC/2 - 100, 70);
+      
+      textSize(32);
+      text("You got " + score + " points!", widthC/2 - 100, 110);
+      text("Click to exit.", widthC/2 - 80, 150);
+    }
 }
