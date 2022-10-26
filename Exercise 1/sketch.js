@@ -5,6 +5,9 @@ var b;
 var c;
 var d;
 var score = 0;
+var timer = 0;
+const endTime = 60 * 15;
+var gameRunning = true;
 
 const pointList = [];
 
@@ -30,8 +33,7 @@ function setup() {
   makePoints(a,b,c,d, 25);
   makePoints(c,d, 350, 200, 25);
   
-  print(pointList[0].yPos)
-
+  
 }
 
 function makeLine(){
@@ -45,25 +47,37 @@ function makeLine(){
 
 var cirX = 40;
 var cirY = 200;
+var maxX = 40;
+var diameter = 20;
 
 function makeCircle(){
   noStroke();
   fill(0)
   
   if (mouseIsPressed === true){
-    circle(mouseX,mouseY,20)
-    cirX = mouseX;
-    cirY = mouseY;
+    
+    if (mouseX > cirX - diameter && mouseX < cirX + diameter){
+      if (mouseY > cirY - diameter && mouseY < cirY + diameter){
+            
+            cirX = mouseX;
+            cirY = mouseY;
+           }
+         }
+    if (mouseX > maxX){
+      maxX = cirX;
+    }
   }
-  else{
-    circle(cirX,cirY,20)
-  }
+  
+    circle(cirX,cirY, diameter)
+  
 }
+
+
 
 function makePoint(X1, Y1, X2, Y2, numDivisions, currentPoint){
   var point = {
-    xPos: ((abs(X2 - X1) / numDivisions) * currentPoint) + X1,
-    yPos: ((abs(Y2 - Y1) / numDivisions) * currentPoint) + Y1,
+    xPos: (((X2 - X1) / numDivisions) * currentPoint) + X1,
+    yPos: (((Y2 - Y1) / numDivisions) * currentPoint) + Y1,
     pointPassed: false
   }
   
@@ -84,6 +98,10 @@ function scoring(){
     var point = pointList[i]
     
     if (!point.pointPassed){
+      
+      if (maxX - 10 > point.xPos){
+        point.pointPassed = true;
+      }
 
     if (cirX > point.xPos - 10 && cirX < point.xPos + 10) {
       if (cirY > point.yPos - 10 && cirY < point.yPos + 10){
@@ -113,12 +131,48 @@ function directions(){
 
 
 function draw(){
+  
+  if (gameRunning == true){
   background(200)
   makeLine();
   makeCircle();
   makeFinish();
   directions();
   scoring();
+  timer++;
+    
+     if (ceil(((endTime - timer) / 60)) % 60 > 9)
+    {
+  text(floor(ceil((endTime - timer) / 60) / 60) + ':' +ceil(((endTime - timer) / 60)) % 60, 115, 50);
+      
+    }
+  else
+    {
+     text(floor(ceil((endTime - timer) / 60) / 60) + ':0' +ceil(((endTime - timer) / 60)) % 60, 115, 50); 
+      
+    }
+  
+  if (timer > endTime)
+    {
+      gameRunning = false;
+      
+    }
+    
+    if (cirX > 340 && cirX < 390 && cirY > 175 && cirY < 225){
+      gameRunning = false;
+    }
+  }
+  
+  if (gameRunning == false){
+    background(200)
+    textSize(25)
+    text('Congratulations! Your score is: ' + score, 11, 200);
+    
+    if (mouseIsPressed == true){
+      
+    }
+  }
+
 }
 
 
