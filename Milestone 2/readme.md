@@ -8,3 +8,6 @@ https://editor.p5js.org/ManateeCatus/sketches/EW8WN894n
 
 Exercise 3:
 https://editor.p5js.org/ddombro3/sketches/1RnmJRfmu
+
+GUI:
+
