@@ -130,16 +130,16 @@ function directions(){
    text('Score:  ', 225, 50)
 }
 
-function doubleClicked(){
-  if (!gameRunning){
-    
-  
-  
-      setup();
+function resetExercise(){
+   setup();
       timer = 0;
       cirX = 40;
       cirY = 200;
       score = 0;
+}
+function doubleClicked(){
+  if (!gameRunning){
+    reset();
   }
 }
 
@@ -191,3 +191,5 @@ function draw(){
   }
 
 }
+
+
