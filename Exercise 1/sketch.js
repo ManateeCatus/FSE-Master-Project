@@ -6,7 +6,7 @@ var c;
 var d;
 var score = 0;
 var timer = 0;
-const endTime = 60 * 15;
+const endTime = 60 * 30;
 var gameRunning = true;
 
 const pointList = [];
@@ -32,6 +32,7 @@ function setup() {
   makePoints(x, y, a, b, 25);
   makePoints(a,b,c,d, 25);
   makePoints(c,d, 350, 200, 25);
+  gameRunning = true;
   
   
 }
@@ -129,6 +130,18 @@ function directions(){
    text('Score:  ', 225, 50)
 }
 
+function doubleClicked(){
+  if (!gameRunning){
+    
+  
+  
+      setup();
+      timer = 0;
+      cirX = 40;
+      cirY = 200;
+      score = 0;
+  }
+}
 
 function draw(){
   
@@ -139,7 +152,11 @@ function draw(){
   makeFinish();
   directions();
   scoring();
-  timer++;
+    
+    if (!(cirX == 40 && cirY == 200)){
+        timer++;
+    }
+
     
      if (ceil(((endTime - timer) / 60)) % 60 > 9)
     {
@@ -168,11 +185,9 @@ function draw(){
     textSize(25)
     text('Congratulations! Your score is: ' + score, 11, 200);
     
-    if (mouseIsPressed == true){
-      
-    }
+    text('Double click to restart', 75, 250)
+    
+    
   }
 
 }
-
-
