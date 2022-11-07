@@ -8,6 +8,7 @@ var score = 0;
 var timer = 0;
 const endTime = 60 * 30;
 var gameRunning = true;
+let clickSFX;
 
 const pointList = [];
 
@@ -34,7 +35,8 @@ function setup() {
   makePoints(c,d, 350, 200, 25);
   gameRunning = true;
   
-  
+  clickSFX = loadSound('assets/click.wav');
+  clickSFX.setVolume(0.4);
 }
 
 function makeLine(){
@@ -108,6 +110,7 @@ function scoring(){
       if (cirY > point.yPos - 10 && cirY < point.yPos + 10){
       score += 1
       point.pointPassed = true;
+      clickSFX.play();
     }
   }
   }
