@@ -10,7 +10,7 @@ var gameRunning = true;
 const widthC = 400;
 const heightC = 400;
 
-function resetExercise() {
+function resetExercise2() {
   timer = 0;
   timeLimit = 400;
   score = 0;
@@ -19,15 +19,14 @@ function resetExercise() {
   gameRunning = true;
 }
 
-function setup() {
-  createCanvas(widthC, heightC);
-    
+function setup2() {
+  createCanvas(widthC, heightC);   
   for (let i = 0; i < circleNumber; i++)
     {
       circleList[i] = createCircle(i);
-    }
-    
-  
+    } 
+     popSFX = loadSound('assets/pop.wav');
+   clickSFX = loadSound('assets/click.wav');
 }
 
 
@@ -63,16 +62,29 @@ function changeColor()
   
 }
 
-function mousePressed()
+function mousePressed2()
 {
   if (gameRunning)
     {
+      if (mouseX < 40 && mouseY < 40)
+        {
+    resetExercise2();
+    setup2();
+    buttonList[1].isPressed = false;
+        }
   if (getNearestCircle() > -1)
     {
       circleList[getNearestCircle()].number -= 1;
-    }
-      
-      
+            if(circleList[getNearestCircle()].number != 0)
+        {
+      clickSFX.play();
+        }
+      else
+        {
+        popSFX.play();  
+        
+        }
+    }      
     }
   
   else
@@ -87,7 +99,9 @@ function doubleClicked()
   if (!gameRunning)
     {
   //Put code here to return to the GUI
-      
+    resetExercise2();
+    setup2();
+    buttonList[1].isPressed = false; 
     }
 }
 
@@ -100,20 +114,6 @@ function getDistance(xPos, yPos)
   
   
   return d;
-}
-
-function keyPressed()
-{
-  if (keyCode == 82)
-    {
-      if (!gameRunning)
-        {
-          resetExercise();
-          setup();
-        }
-    }
-  
-  
 }
 
 function getNearestCircle()
@@ -185,12 +185,14 @@ function circleUpdate(c)
 }
 
 
-function draw() {
+function draw2() {
   
   
   if (gameRunning)
 {
   background(220);
+  fill('red');
+  square(-5, -5, 45);
   fill(100);
   for (let i = 0; i < circleList.length; i++)
     {
@@ -226,6 +228,9 @@ function draw() {
      text(floor(ceil((endTime - timer) / 60) / 60) + ':0' +ceil(((endTime - timer) / 60)) % 60, widthC - 70, 25); 
       
     }
+  textSize(18);
+  text('Exit',3, 20)
+  textSize(32)
   
   if (timer > endTime)
     {
@@ -236,7 +241,7 @@ function draw() {
 }
   else
     {
-      background("#8096A8")
+      background("220")
       
       fill("rgb(56,47,47)");
       textSize(50);
@@ -246,6 +251,5 @@ function draw() {
       text("You got " + score + " points!", widthC/2 - 115, 110);
       
       text("Double click to exit.", widthC/2 - 130, 180);
-      text("Press R to restart.", widthC/2 - 130, 150);
     }
 }
