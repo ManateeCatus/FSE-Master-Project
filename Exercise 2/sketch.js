@@ -10,6 +10,9 @@ var gameRunning = true;
 const widthC = 400;
 const heightC = 400;
 
+/*
+This function resets all of the variables declared at the start of the game, which is used to help restart the game.
+*/
 function resetExercise2() {
   timer = 0;
   timeLimit = 400;
@@ -19,6 +22,9 @@ function resetExercise2() {
   gameRunning = true;
 }
 
+/*
+This function fills an array with various circles, and loads the sound effects used in the game.
+*/
 function setup2() {
   createCanvas(widthC, heightC);   
   for (let i = 0; i < circleNumber; i++)
@@ -29,11 +35,11 @@ function setup2() {
    clickSFX = loadSound('assets/click.wav');
 }
 
-
-
+/*
+This function creates a circle object, which has size, color, and position.
+Time determines how long it will take for the circle to appear on the screen, an number determines how many times a circle needs to be clicked.
+*/
 function createCircle(i) {
-  
-  
   var circle = {
     radius: 50,
     red: 175,
@@ -43,25 +49,16 @@ function createCircle(i) {
     xPos: random(50, widthC - 50),
     yPos: random(50, heightC - 50),
     time:  -1 * (timeLimit / 3) * i,  
-    fading: false,
     number: floor(2 + random (6))
-    
-    
-}
-
-    
-  
+  }
   return circle;
   }
 
-function changeColor()
-{
-  circleList[1].red = 50;
-  
-  
-  
-}
-
+/*
+This function checks if the mouse is over the exit button, and if so, exits and resets the state of the exercise.
+If the mouse is not over the exit button, it will check if it is over any of the circles, and if so, will reduce the number of the closest circle to the mouse by 1.
+It will play a sound when this happens, with a louder sound if the click causes the number to reach 0.
+*/
 function mousePressed2()
 {
   if (gameRunning)
@@ -94,28 +91,34 @@ function mousePressed2()
     }
 }
 
+/*
+If the game is not running, this function will cause it to exit and reset.
+*/
 function doubleClicked()
 {
   if (!gameRunning)
     {
-  //Put code here to return to the GUI
     resetExercise2();
     setup2();
     buttonList[1].isPressed = false; 
     }
 }
 
+/*
+This function returns the distance from the position of the mouse to the position of the point created by xPos and yPos.
+*/
 function getDistance(xPos, yPos)
 {
   let d;
-  
-  d = sqrt((mouseX - xPos) * (mouseX - xPos) + (mouseY - yPos) * (mouseY - yPos))
-  
-  
-  
+  d = sqrt((mouseX - xPos) * (mouseX - xPos) + (mouseY - yPos) * (mouseY - yPos);
   return d;
 }
 
+/*
+If the distance between one of the circles and the mouse is less than the radius of the circle, it returns the index of that circle.
+If there are multiple circles within the distance of the mouse, returns the index of the closest circle.
+Otherwise, returns -1.
+*/
 function getNearestCircle()
 {
   let nearest = -1;
@@ -125,33 +128,31 @@ function getNearestCircle()
     {
       let dist = getDistance(circleList[i].xPos, circleList[i].yPos);
       
-      
     if (dist < circleList[i].radius / 2)
       {
         if (dist < closest);
         {
           nearest = i;
         }
-        
-        
       }
-    
-      
-      
-      
     }
   return nearest;
 }
 
+/*
+  If the time of the circle is greater than the time limit, moves the circle to hide it.
+  If the number of the circle is 0, hides it, increases its time to the time limit + 1, and gives score.
+  If the time of the circle is equal to the time limit, this means the circle has faded naturally, and the scoreMult and streak are reset.
+  If the time becomes greater than double the time limit, moves the circle to a random position, sets its time to 0, and gives it a random number.
+  */
 function circleUpdate(c)
 {
   if (c.time > timeLimit)
     {
-      c.xPos = -500;
+      c.xPos = -500; 
       c.yPos = -500;
-      
     }
-  
+
   if (c.number <= 0)
     {
       c.xPos = -500;
@@ -164,9 +165,6 @@ function circleUpdate(c)
         }
       streak++;
       score += scoreMult;
-      //Gradual scaling of timeLimit increases speed, disabled for now.
-      //timeLimit -= 1;
-      
     }
   
   if (c.time == timeLimit)
@@ -184,10 +182,11 @@ function circleUpdate(c)
     }
 }
 
-
+/*
+While the game is running, this function draws the exercise, and updates each circle.
+When the game is not running, it draws an end screen, which shows the player their score.
+*/
 function draw2() {
-  
-  
   if (gameRunning)
 {
   background(220);
