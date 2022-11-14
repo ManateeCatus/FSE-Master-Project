@@ -1,7 +1,7 @@
 const points = [];
 let dragPoint = null;
 let score = 0;
-const endTime = 60 * 2;
+const endTime = 60 * 20;
 var gameRunning = true;
 let timer = 0;
 const fourBt = 1;
