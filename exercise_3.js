@@ -1,8 +1,8 @@
 function ex3(){
 const points = [];
 let dragPoint = null;
-let score = 0;
 const endTime = 60 * 30;
+let score = endTime;
 var gameRunning = true;
 let timer = 0;
 const fourBt = 1;
@@ -167,7 +167,7 @@ function shapeIsOverlapped() {
   if(dragPoint == null) {
     if (gameRunning)
       {
-    score = score +1;
+    score = score -1;
       }
       text(score,100,100);
 
