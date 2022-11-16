@@ -2,7 +2,7 @@ function ex3(){
 const points = [];
 let dragPoint = null;
 const endTime = 60 * 30;
-let score = endTime;
+  let score = endTime;
 var gameRunning = true;
 let timer = 0;
 const fourBt = 1;
@@ -32,7 +32,7 @@ function resetExercise3()
       points.pop();
       
     }
-  score = 0;
+  score = endTime;
   gameRunning = true;
   timer = 0; 
 }
@@ -62,6 +62,7 @@ function draw3() {
   textSize(32);
 if (gameRunning)
   {
+    noStroke();
   if (ceil(((endTime - timer) / 60)) % 60 > 9)
     {
   text(floor(ceil((endTime - timer) /60) / 60) + ':' +ceil(((endTime - timer) / 60)) % 60, width - 70, 30);
@@ -91,6 +92,7 @@ if (gameRunning)
     }
   if (timer < endTime)
     {
+      noStroke();
   text('Score:',50,30);
   text('Timer: ', 230, 30)
     }
@@ -100,7 +102,7 @@ if (gameRunning)
     
       if (timer < endTime)
         {
-  score = score + 1;
+  score = score - 1;
  
         }
   }
@@ -167,7 +169,7 @@ function shapeIsOverlapped() {
   if(dragPoint == null) {
     if (gameRunning)
       {
-    score = score -1;
+    score = score +1;
       }
       text(score,100,100);
 
